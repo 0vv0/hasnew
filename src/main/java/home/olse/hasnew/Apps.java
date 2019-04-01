@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,32 +19,85 @@ public class Apps {
     @Autowired
     private Logger logger;
 
-    private List<VersionedApp> appsList = new ArrayList<>();
+    private Map<File, VersionedApp> apps = new HashMap<>();
 
-    public List<VersionedApp> getList() {
-
-        appsList.clear();
-
-        logger.log(Level.INFO, "path to apps classes: " + path);
+    private static List<File> files(String path) {
+        Logger.getLogger(Apps.class.getName()).log(Level.INFO, "path to apps classes: " + path);
         File f = new File(path);
-//        logger.log(Level.INFO, "absolute path: " + f.getAbsolutePath());
-
         File[] files = f.listFiles(
                 (dir, name) -> name != null && name.endsWith(".java")
         );
-
         if (files != null) {
-            for (File file : files) {
-                logger.log(Level.INFO, "file: >" + file.getAbsolutePath());
-                try {
-                    VersionedApp app = AppsDynamicCompiler.compileFrom(file);
-                    appsList.add(app);
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
-                    logger.log(Level.WARNING, e.toString());
-                }
-            }
+            return Arrays.asList(files);
+        } else {
+            return new ArrayList<>(0);
         }
 
-        return appsList;
     }
+
+    public List<String> files() {
+        List<File> files = files(path);
+        List<String> list = new ArrayList<>(files.size());
+        for (File file : files) {
+            list.add(file.getName());
+        }
+        return list;
+    }
+
+    public List<VersionedApp> apps(){
+        apps = compile(files(path));
+//        List<VersionedApp> versionedAppList = new ArrayList<>(apps.values());
+        return new ArrayList<>(apps.values());
+    }
+
+    public VersionedApp getByFileName(String fileName){
+        for (File file : files(path)) {
+//            logger.log(Level.INFO, file.getName());
+            if(file.getName().equals(fileName+".java")){
+                return compile(file);
+            }
+        }
+        return null;
+    }
+
+    private static Map<File, VersionedApp> compile(final File[] files) {
+        if (files != null) {
+            Map<File, VersionedApp> apps = new HashMap<>(files.length);
+            for (File file : files) {
+                VersionedApp app = compile(file);
+                if (app != null) {
+                    apps.put(file, app);
+                }
+            }
+            return apps;
+        } else {
+            return new HashMap<>(0);
+        }
+    }
+
+    private static Map<File, VersionedApp> compile(final List<File> files) {
+        if (files != null) {
+            Map<File, VersionedApp> apps = new HashMap<>(files.size());
+            for (File file : files) {
+                VersionedApp app = compile(file);
+                if (app != null) {
+                    apps.put(file, app);
+                }
+            }
+            return apps;
+        } else {
+            return new HashMap<>(0);
+        }
+    }
+
+    private static VersionedApp compile(final File file) {
+        try {
+            VersionedApp app = AppsDynamicCompiler.compileFrom(file);
+            return app;
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
+            Logger.getLogger(Apps.class.getName()).log(Level.INFO, e.toString());
+        }
+        return null;
+    }
+
 }
