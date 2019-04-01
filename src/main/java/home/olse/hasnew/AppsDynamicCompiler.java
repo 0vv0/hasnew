@@ -16,7 +16,9 @@ public class AppsDynamicCompiler {
     public static VersionedApp compileFrom(final File file) throws ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
 
         // dynamically you can call
-        String className = "home.olse.hasnew.apps." + file.getName().replace(".class", "");
+        String className = "home.olse.hasnew.apps." + file.getName()
+                .replace(".class", "")
+                .replace(".java", "");
         logger.log(Level.INFO, "className is " + className);
 
         String javaCode = new String(Files.readAllBytes(file.toPath()));

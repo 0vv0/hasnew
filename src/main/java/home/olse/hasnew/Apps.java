@@ -27,11 +27,16 @@ public class Apps {
         appsList.clear();
 
         logger.log(Level.INFO, "path to apps classes: " + path);
-
         File f = new File(path);
-        File[] files = f.listFiles();
+//        logger.log(Level.INFO, "absolute path: " + f.getAbsolutePath());
+
+        File[] files = f.listFiles(
+                (dir, name) -> name != null && name.endsWith(".java")
+        );
+
         if (files != null) {
             for (File file : files) {
+                logger.log(Level.INFO, "file: >" + file.getAbsolutePath());
                 try {
                     VersionedApp app = AppsDynamicCompiler.compileFrom(file);
                     appsList.add(app);
