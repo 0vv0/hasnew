@@ -37,7 +37,7 @@ public class MainController {
     public String root() {
         String body = "OK. <a href=\"/list\">list</a>";
 
-        return body + "<br>" + getFileListTable();
+        return body + "<br><hr>" + getFileListTable();
     }
 
     @RequestMapping(value = "{fileName}")
