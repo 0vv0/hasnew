@@ -25,11 +25,7 @@ public class AdobeAcrobatReaderDCContinuousTrack implements VersionedApp {
             if (t != null && t.startsWith("Adobe Acrobat Reader DC (Continuous Track)")) {
                 Elements tds = tr.getElementsByTag("td");
                 date = tds.last() != null ? tds.last().text() : "";
-
-                if(tr.previousElementSibling()!=null
-                        &&tr.previousElementSibling().previousElementSibling()!=null){
-                    return tr.previousElementSibling().previousElementSibling().getElementsByTag("th").text();
-                }
+                return tr.parent().getElementsByTag("tr").first().text();
 
             }
         }
