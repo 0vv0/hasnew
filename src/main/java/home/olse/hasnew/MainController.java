@@ -6,16 +6,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/")
 public class MainController {
     @Autowired
     private Apps appsLister;
 
-    @RequestMapping("/list")
+    @RequestMapping("list")
     @ResponseBody
     public String get() {
         StringBuilder sb = new StringBuilder("<table id=\"versionsTable\" border = 1>");
@@ -33,23 +33,22 @@ public class MainController {
         return sb.toString();
     }
 
-    @RequestMapping("/")
+    @RequestMapping("")
     @ResponseBody
     public String root() {
-//        String body = "OK. <a href=\"/list\">list</a>";
+        String body = "OK. <a href=\"/list\">list</a>";
 
-
-        return getFileListTable();
+        return body + "<br>" + getFileListTable();
     }
 
-    @RequestMapping(path = "/{fileName}")
+    @RequestMapping(value = "{fileName}")
     @ResponseBody
-    public String getFile(@PathVariable("fileName") String fileName) {
-//        Logger.getGlobal().log(Level.INFO, "file:> " + fileName);
+    public String getFile(@PathVariable String fileName) {
         VersionedApp app = appsLister.getByFileName(fileName);
         String s = getTableEntry(getTREntry(app));
 
-        return "<body>" + s + "</body>";
+
+        return s;
     }
 
     private String getFileListTable() {
@@ -69,7 +68,7 @@ public class MainController {
     }
 
     private String getTREntry(VersionedApp app) {
-        assert app!=null;
+        assert app != null;
         String sb = "<tr>" +
                 "<td>" + app.getName() + "</td>" +
                 "<td>" + app.getVersion() + "</td>" +
@@ -81,6 +80,5 @@ public class MainController {
     private String getTableEntry(String trNode) {
         return "<table><tbody>" + trNode + "</tbody></table>";
     }
-
 
 }
