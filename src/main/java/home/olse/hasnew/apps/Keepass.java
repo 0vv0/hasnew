@@ -14,6 +14,11 @@ public class Keepass extends VersionedAppsImpl {
     }
 
     @Override
+    public String getFileMask() {
+        return "DPD KeePass ";
+    }
+
+    @Override
     protected String getURL() {
         return "https://keepass.info/index.html";
     }
@@ -30,9 +35,9 @@ public class Keepass extends VersionedAppsImpl {
                 String tail = " released";
                 if (t != null && t.startsWith(searchText) && t.endsWith(tail)) {
                     int i = t.indexOf(tail);
-                    version = t.substring(searchText.length()-1, i-1);
+                    version = t.substring(searchText.length() - 1, i - 1);
 //                    System.out.println(version);
-                    if(p.nextElementSibling()!=null&&p.nextElementSibling().nextElementSibling()!=null) {
+                    if (p.nextElementSibling() != null && p.nextElementSibling().nextElementSibling() != null) {
                         date = p.nextElementSibling().nextElementSibling().text();
                     } else {
                         date = " ";
@@ -46,8 +51,5 @@ public class Keepass extends VersionedAppsImpl {
         }
     }
 
-    @Override
-    public String getFileMask() {
-        return "DPD KeePass ";
-    }
+
 }

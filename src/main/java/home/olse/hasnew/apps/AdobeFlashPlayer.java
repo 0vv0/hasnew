@@ -8,12 +8,23 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class AdobeFlashPlayer extends VersionedAppsImpl {
+    {
+        name = "Adobe Flash Player";
+    }
+
+    @Override
     public String getURL() {
         return "https://get.adobe.com/flashplayer/";
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD Adobe Flash Player ";
+    }
+
+    @Override
     public void reReadData() {
-        name = "Adobe Flash Player";
+
         try {
             Document doc = Jsoup.connect(getURL()).get();
             if (doc.getElementById("AUTO_ID_columnleft_p_version") != null) {
@@ -26,8 +37,5 @@ public class AdobeFlashPlayer extends VersionedAppsImpl {
         }
     }
 
-    @Override
-    public String getFileMask() {
-        return "DPD Adobe Flash Player ";
-    }
+
 }

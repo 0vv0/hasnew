@@ -10,15 +10,23 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class AdobeAcrobatReaderDCContinuousTrack extends VersionedAppsImpl {
+    {
+        name = "Adobe Acrobat Reader DC (Continuous Track)";
+    }
+
+    @Override
     protected String getURL() {
         return "https://supportdownloads.adobe.com/product.jsp?platform=windows&product=10";
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD Adobe Reader DC ";
+    }
 
-
+    @Override
     public void reReadData() {
 //        name, date, value should be set here
-        name = "Adobe Acrobat Reader DC (Continuous Track)";
         try {
             Document doc = Jsoup.connect(getURL()).get();
             for (Element tr : doc.getElementsByTag("tr")) {
@@ -36,8 +44,5 @@ public class AdobeAcrobatReaderDCContinuousTrack extends VersionedAppsImpl {
         }
     }
 
-    @Override
-    public String getFileMask() {
-        return "DPD Adobe Reader DC ";
-    }
+
 }

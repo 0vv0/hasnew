@@ -8,12 +8,23 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class CanneverbeCDBurner extends VersionedAppsImpl {
+    {
+        name = "Canneverbe CDBurner";
+    }
+
+    @Override
+    public String getFileMask() {
+        return "DPD Canneverbe CDBurnerXP ";
+    }
+
+    @Override
     public String getURL() {
         return "https://cdburnerxp.se/en/download";
     }
 
+    @Override
     public void reReadData() {
-        name = "Canneverbe CDBurner";
+
         try {
             Document doc = Jsoup.connect(getURL()).get();
             version = doc.getElementsByTag("small").get(1).text();
@@ -24,8 +35,5 @@ public class CanneverbeCDBurner extends VersionedAppsImpl {
         }
     }
 
-    @Override
-    public String getFileMask() {
-        return "DPD Canneverbe CDBurnerXP ";
-    }
+
 }

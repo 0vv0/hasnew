@@ -10,12 +10,23 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class ITunes extends VersionedAppsImpl {
+    {
+        name = "iTunes";
+    }
+
+    @Override
+    public String getFileMask() {
+        return "DPD Apple iTunes ";
+    }
+
+    @Override
     public String getURL() {
         return "https://support.apple.com/en-us/HT201222";
     }
 
+    @Override
     public void reReadData() {
-        name = "iTunes";
+
         try {
             Document doc = Jsoup.connect(getURL()).get();
             for (Element tr : doc.getElementsByTag("tr")) {
@@ -33,8 +44,5 @@ public class ITunes extends VersionedAppsImpl {
         }
     }
 
-    @Override
-    public String getFileMask() {
-        return "DPD Apple iTunes ";
-    }
+
 }

@@ -18,6 +18,10 @@ public class Ghostscript extends VersionedAppsImpl {
         return "https://www.ghostscript.com/releases.html";
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD GPL Ghostscript ";
+    }
 
     @Override
     public void reReadData() {
@@ -30,7 +34,7 @@ public class Ghostscript extends VersionedAppsImpl {
                 if (t != null && t.startsWith(searchText)) {
                     version = p.getElementsByTag("a").first().text();
 //                    System.out.println(version);
-                    date = t.substring(searchText.length()+version.length()+1);
+                    date = t.substring(searchText.length() + version.length() + 1);
                     return;
                 }
             }
@@ -40,8 +44,5 @@ public class Ghostscript extends VersionedAppsImpl {
         }
     }
 
-    @Override
-    public String getFileMask() {
-        return "DPD GPL Ghostscript ";
-    }
+
 }

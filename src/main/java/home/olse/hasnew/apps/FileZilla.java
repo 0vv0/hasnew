@@ -14,10 +14,17 @@ public class FileZilla extends VersionedAppsImpl {
         name = "FileZilla Client";
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD FileZilla ";
+    }
+
+    @Override
     public String getURL() {
         return "https://filezilla-project.org/";
     }
 
+    @Override
     public void reReadData() {
         try {
             Document doc = Jsoup.connect(getURL()).get();
@@ -36,8 +43,5 @@ public class FileZilla extends VersionedAppsImpl {
         }
     }
 
-    @Override
-    public String getFileMask() {
-        return "DPD FileZilla ";
-    }
+
 }

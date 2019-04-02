@@ -18,6 +18,10 @@ public class Gimp extends VersionedAppsImpl {
         return "https://www.gimp.org/downloads/";
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD Gimp ";
+    }
 
     @Override
     public void reReadData() {
@@ -30,7 +34,7 @@ public class Gimp extends VersionedAppsImpl {
                 if (t != null && t.startsWith(searchText)) {
                     version = p.getElementsByTag("b").first().text();
 //                    System.out.println(version);
-                    date = t.substring(searchText.length()+version.length()+1);
+                    date = t.substring(searchText.length() + version.length() + 1);
                     return;
                 }
             }
@@ -40,8 +44,5 @@ public class Gimp extends VersionedAppsImpl {
         }
     }
 
-    @Override
-    public String getFileMask() {
-        return "DPD Gimp ";
-    }
+
 }
