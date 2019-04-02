@@ -4,23 +4,25 @@ import home.olse.hasnew.VersionedAppsImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class Keepass extends VersionedAppsImpl {
+public class PaintDotNet extends VersionedAppsImpl {
     {
-        name = "KeePass";
+        name = "Paint.NET";
     }
 
     @Override
     public String getFileMask() {
-        return "DPD KeePass ";
+        return "DPD dotPDN Paint.Net ";
     }
 
     @Override
     protected String getURL() {
-        return "https://keepass.info/index.html";
+        return "http://www.getpaint.net/download.html";
     }
 
 
@@ -28,23 +30,26 @@ public class Keepass extends VersionedAppsImpl {
     public void reReadData() {
 //        name, date, value should be set here
         try {
-            String searchText = "KeePass 2";
+            String id = "table8";
             Document doc = Jsoup.connect(getURL()).get();
-            for (Element p : doc.getElementsByTag("a")) {
-                String t = p.text();
-                String tail = " released";
-                if (t != null && t.startsWith(searchText) && t.endsWith(tail)) {
-                    int i = t.indexOf(tail);
-                    version = t.substring(searchText.length() - 1, i);
-//                    System.out.println(version);
-                    if (p.nextElementSibling() != null && p.nextElementSibling().nextElementSibling() != null) {
-                        date = p.nextElementSibling().nextElementSibling().text();
+            Element element = doc.getElementById(id);
+            if (element.getElementsByTag("tr") != null &&
+                    element.getElementsByTag("tr").size() > 1) {
+
+                Element el = element.getElementsByTag("tr").get(1);
+
+                Element td = el.getElementsByTag("td").first();
+                if (td != null) {
+                    version = td.text();
+                    if (td.nextElementSibling() != null) {
+                        date = td.nextElementSibling().text();
                     } else {
                         date = " ";
                     }
-                    return;
                 }
             }
+
+
         } catch (IOException e) {
             if (logger == null) {
                 System.out.println(e);

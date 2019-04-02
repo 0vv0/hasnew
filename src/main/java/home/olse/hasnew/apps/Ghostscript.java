@@ -39,7 +39,11 @@ public class Ghostscript extends VersionedAppsImpl {
                 }
             }
         } catch (IOException e) {
-            logger.log(Level.INFO, e.getMessage());
+            if (logger == null) {
+                System.out.println(e);
+            } else {
+                logger.log(Level.INFO, e.getMessage() != null ? e.getMessage() : e.toString());
+            }
             version = e.getMessage().substring(0, e.getMessage().length() > 100 ? 100 : e.getMessage().length());
         }
     }
