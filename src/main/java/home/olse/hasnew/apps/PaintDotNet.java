@@ -22,7 +22,7 @@ public class PaintDotNet extends VersionedAppsImpl {
 
     @Override
     protected String getURL() {
-        return "http://www.getpaint.net/download.html";
+        return "https://www.getpaint.net/download.html";
     }
 
 
