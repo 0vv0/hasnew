@@ -30,4 +30,8 @@ public class CitrixWorkspaceApp extends VersionedAppsImpl {
         }
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD Citrix Workspace ";
+    }
 }

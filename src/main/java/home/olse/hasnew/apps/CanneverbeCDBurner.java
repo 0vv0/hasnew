@@ -23,4 +23,9 @@ public class CanneverbeCDBurner extends VersionedAppsImpl {
             version = e.getMessage().substring(0, e.getMessage().length() > 100 ? 100 : e.getMessage().length());
         }
     }
+
+    @Override
+    public String getFileMask() {
+        return "DPD Canneverbe CDBurnerXP ";
+    }
 }

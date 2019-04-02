@@ -33,4 +33,8 @@ public class ITunes extends VersionedAppsImpl {
         }
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD Apple iTunes ";
+    }
 }

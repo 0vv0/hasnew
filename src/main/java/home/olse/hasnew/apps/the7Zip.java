@@ -32,4 +32,9 @@ public class the7Zip extends VersionedAppsImpl {
             version = e.getMessage().substring(0, e.getMessage().length()>100?100:e.getMessage().length());
         }
     }
+
+    @Override
+    public String getFileMask() {
+        return "DPD 7-Zip ";
+    }
 }

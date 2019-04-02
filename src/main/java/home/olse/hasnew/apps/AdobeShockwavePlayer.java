@@ -26,4 +26,8 @@ public class AdobeShockwavePlayer extends VersionedAppsImpl {
         }
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD Adobe Shockwave Player ";
+    }
 }

@@ -14,6 +14,8 @@ public class AdobeAcrobatReaderDCContinuousTrack extends VersionedAppsImpl {
         return "https://supportdownloads.adobe.com/product.jsp?platform=windows&product=10";
     }
 
+
+
     public void reReadData() {
 //        name, date, value should be set here
         name = "Adobe Acrobat Reader DC (Continuous Track)";
@@ -34,5 +36,8 @@ public class AdobeAcrobatReaderDCContinuousTrack extends VersionedAppsImpl {
         }
     }
 
-
+    @Override
+    public String getFileMask() {
+        return "DPD Adobe Reader DC ";
+    }
 }

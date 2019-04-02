@@ -33,4 +33,8 @@ public class FileZilla extends VersionedAppsImpl {
         }
     }
 
+    @Override
+    public String getFileMask() {
+        return "DPD FileZilla ";
+    }
 }

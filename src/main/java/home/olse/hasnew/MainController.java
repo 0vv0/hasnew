@@ -13,18 +13,27 @@ import java.util.List;
 public class MainController {
     @Autowired
     private Apps appsLister;
+    @Autowired
+    private DPDInfoService dpds;
 
     @RequestMapping("list")
     @ResponseBody
     public String get() {
         StringBuilder sb = new StringBuilder("<table id=\"versionsTable\" border = 1>");
+        sb.append("<thead>");
+        sb.append("<tr><td>Name</td><td>Version</td><td>Release Date</td><td>DPD</td></tr>");
+        sb.append("<tr><td>")
+                .append(appsLister.getPath()).append("</td><td></td><td></td><td>")
+                .append(dpds.getPath()).append("</td></tr>");
+        sb.append("</thead>");
         sb.append("<tbody>");
         for (VersionedApp app : appsLister.apps()) {
             sb
                     .append("<tr>")
-                    .append("<td>").append(app.getName())
-                    .append("<td>").append(app.getVersion())
-                    .append("<td>").append(app.getDate())
+                    .append("<td>").append(app.getName()).append("</td>")
+                    .append("<td>").append(app.getVersion()).append("</td>")
+                    .append("<td>").append(app.getDate()).append("</td>")
+                    .append("<td>").append(dpds.getLastVersion(app)).append("</td>")
                     .append("</tr>");
         }
         sb.append("</tbody>").append("</table>");
@@ -67,13 +76,16 @@ public class MainController {
     }
 
     private String getTREntry(VersionedApp app) {
-        assert app != null;
-        String sb = "<tr>" +
-                "<td>" + app.getName() + "</td>" +
-                "<td>" + app.getVersion() + "</td>" +
-                "<td>" + app.getDate() + "</td>" +
-                "</tr>";
-        return sb;
+        if (app != null) {
+            String sb = "<tr>" +
+                    "<td>" + app.getName() + "</td>" +
+                    "<td>" + app.getVersion() + "</td>" +
+                    "<td>" + app.getDate() + "</td>" +
+                    "</tr>";
+            return sb;
+        } else {
+            return "</tr>";
+        }
     }
 
     private String getTableEntry(String trNode) {
