@@ -4,19 +4,18 @@ import home.olse.hasnew.VersionedAppsImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class Ghostscript extends VersionedAppsImpl {
+public class Gimp extends VersionedAppsImpl {
     {
-        name = "Ghostscript";
+        name = "Gimp";
     }
 
     @Override
     protected String getURL() {
-        return "https://www.ghostscript.com/releases.html";
+        return "https://www.gimp.org/downloads/";
     }
 
 
@@ -24,12 +23,12 @@ public class Ghostscript extends VersionedAppsImpl {
     public void reReadData() {
 //        name, date, value should be set here
         try {
-            String searchText = "The latest AGPL release is ";
+            String searchText = "The current stable release of GIMP is ";
             Document doc = Jsoup.connect(getURL()).get();
             for (Element p : doc.getElementsByTag("p")) {
                 String t = p.text();
                 if (t != null && t.startsWith(searchText)) {
-                    version = p.getElementsByTag("a").first().text();
+                    version = p.getElementsByTag("b").first().text();
 //                    System.out.println(version);
                     date = t.substring(searchText.length()+version.length()+1);
                     return;
@@ -43,6 +42,6 @@ public class Ghostscript extends VersionedAppsImpl {
 
     @Override
     public String getFileMask() {
-        return "DPD GPL Ghostscript ";
+        return "DPD Gimp ";
     }
 }
