@@ -10,12 +10,15 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class FileZilla extends VersionedAppsImpl {
+    {
+        name = "FileZilla Client";
+    }
+
     public String getURL() {
         return "https://filezilla-project.org/";
     }
 
     public void reReadData() {
-        name = "FileZilla Client";
         try {
             Document doc = Jsoup.connect(getURL()).get();
             Element element = doc.getElementsByTag("blockquote").first();

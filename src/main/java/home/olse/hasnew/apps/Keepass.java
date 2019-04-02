@@ -8,14 +8,14 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class Ghostscript extends VersionedAppsImpl {
+public class Keepass extends VersionedAppsImpl {
     {
-        name = "Ghostscript";
+        name = "KeePass";
     }
 
     @Override
     protected String getURL() {
-        return "https://www.ghostscript.com/releases.html";
+        return "https://keepass.info/index.html";
     }
 
 
@@ -23,14 +23,20 @@ public class Ghostscript extends VersionedAppsImpl {
     public void reReadData() {
 //        name, date, value should be set here
         try {
-            String searchText = "The latest AGPL release is ";
+            String searchText = "KeePass 2";
             Document doc = Jsoup.connect(getURL()).get();
-            for (Element p : doc.getElementsByTag("p")) {
+            for (Element p : doc.getElementsByTag("a")) {
                 String t = p.text();
-                if (t != null && t.startsWith(searchText)) {
-                    version = p.getElementsByTag("a").first().text();
+                String tail = " released";
+                if (t != null && t.startsWith(searchText) && t.endsWith(tail)) {
+                    int i = t.indexOf(tail);
+                    version = t.substring(searchText.length()-1, i-1);
 //                    System.out.println(version);
-                    date = t.substring(searchText.length()+version.length()+1);
+                    if(p.nextElementSibling()!=null&&p.nextElementSibling().nextElementSibling()!=null) {
+                        date = p.nextElementSibling().nextElementSibling().text();
+                    } else {
+                        date = " ";
+                    }
                     return;
                 }
             }
@@ -42,6 +48,6 @@ public class Ghostscript extends VersionedAppsImpl {
 
     @Override
     public String getFileMask() {
-        return "DPD GPL Ghostscript ";
+        return "DPD KeePass ";
     }
 }
