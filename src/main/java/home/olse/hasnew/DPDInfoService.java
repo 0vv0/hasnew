@@ -22,7 +22,7 @@ public class DPDInfoService {
                 name != null &&
                 app != null &&
                 app.getFileMask() != null &&
-                name.contains(app.getFileMask()));
+                name.startsWith(app.getFileMask()));
 
         if(files!=null) {
             List<String> fileNames = new ArrayList<>(files.length);
