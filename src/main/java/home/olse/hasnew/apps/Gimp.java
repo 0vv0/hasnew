@@ -6,7 +6,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class Gimp extends VersionedAppsImpl {
     {
@@ -24,9 +23,9 @@ public class Gimp extends VersionedAppsImpl {
     }
 
     @Override
-    public void reReadData() {
+    public void reReadData() throws IOException {
 //        name, date, value should be set here
-        try {
+
             String searchText = "The current stable release of GIMP is ";
             Document doc = Jsoup.connect(getURL()).get();
             for (Element p : doc.getElementsByTag("p")) {
@@ -38,14 +37,7 @@ public class Gimp extends VersionedAppsImpl {
                     return;
                 }
             }
-        } catch (IOException e) {
-            if (logger == null) {
-                System.out.println(e);
-            } else {
-                logger.log(Level.INFO, e.getMessage() != null ? e.getMessage() : e.toString());
-            }
-            version = e.getMessage().substring(0, e.getMessage().length() > 100 ? 100 : e.getMessage().length());
-        }
+
     }
 
 

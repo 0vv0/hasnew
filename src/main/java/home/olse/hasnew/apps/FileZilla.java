@@ -7,7 +7,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class FileZilla extends VersionedAppsImpl {
     {
@@ -25,8 +24,8 @@ public class FileZilla extends VersionedAppsImpl {
     }
 
     @Override
-    public void reReadData() {
-        try {
+    public void reReadData() throws IOException {
+
             Document doc = Jsoup.connect(getURL()).get();
             Element element = doc.getElementsByTag("blockquote").first();
             Elements elements = element.getElementsByTag("h3");
@@ -37,14 +36,7 @@ public class FileZilla extends VersionedAppsImpl {
                     return;
                 }
             }
-        } catch (IOException e) {
-            if (logger == null) {
-                System.out.println(e);
-            } else {
-                logger.log(Level.INFO, e.getMessage() != null ? e.getMessage() : e.toString());
-            }
-            version = e.getMessage().substring(0, e.getMessage().length() > 100 ? 100 : e.getMessage().length());
-        }
+
     }
 
 

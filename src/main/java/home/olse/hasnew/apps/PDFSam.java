@@ -7,29 +7,30 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 
-public class CitrixWorkspaceApp extends VersionedAppsImpl {
+public class PDFSam extends VersionedAppsImpl {
     {
-        name = "Citrix Workspace app";
+        name = "PDFSam";
     }
 
     @Override
     public String getFileMask() {
-        return "DPD Citrix Workspace ";
+        return "DPD PDFsam Basic ";
     }
 
     @Override
     public String getURL() {
-        return "https://www.citrix.com/downloads/workspace-app/windows/workspace-app-for-windows-latest.html";
+        return "https://pdfsam.org/downloads/";
     }
 
     @Override
     public void reReadData() throws IOException {
+        String searchString = "PDFsam Basic";
 
         Document doc = Jsoup.connect(getURL()).get();
-        for (Element el : doc.getElementsByTag("h1")) {
-            if (el.text().startsWith(name)) {
-                date = el.nextElementSibling().text();
-                version = el.text().substring(name.length());
+        for (Element e : doc.getElementsByTag("h4")) {
+            if (e.text().startsWith(searchString) && e.nextElementSibling() != null) {
+                version = e.nextElementSibling().text();
+                date = " ";
                 return;
             }
         }

@@ -6,7 +6,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class Keepass extends VersionedAppsImpl {
     {
@@ -25,34 +24,27 @@ public class Keepass extends VersionedAppsImpl {
 
 
     @Override
-    public void reReadData() {
+    public void reReadData() throws IOException {
 //        name, date, value should be set here
-        try {
-            String searchText = "KeePass 2";
-            Document doc = Jsoup.connect(getURL()).get();
-            for (Element p : doc.getElementsByTag("a")) {
-                String t = p.text();
-                String tail = " released";
-                if (t != null && t.startsWith(searchText) && t.endsWith(tail)) {
-                    int i = t.indexOf(tail);
-                    version = t.substring(searchText.length() - 1, i);
+
+        String searchText = "KeePass 2";
+        Document doc = Jsoup.connect(getURL()).get();
+        for (Element p : doc.getElementsByTag("a")) {
+            String t = p.text();
+            String tail = " released";
+            if (t != null && t.startsWith(searchText) && t.endsWith(tail)) {
+                int i = t.indexOf(tail);
+                version = t.substring(searchText.length() - 1, i);
 //                    System.out.println(version);
-                    if (p.nextElementSibling() != null && p.nextElementSibling().nextElementSibling() != null) {
-                        date = p.nextElementSibling().nextElementSibling().text();
-                    } else {
-                        date = " ";
-                    }
-                    return;
+                if (p.nextElementSibling() != null && p.nextElementSibling().nextElementSibling() != null) {
+                    date = p.nextElementSibling().nextElementSibling().text();
+                } else {
+                    date = " ";
                 }
+                return;
             }
-        } catch (IOException e) {
-            if (logger == null) {
-                System.out.println(e);
-            } else {
-                logger.log(Level.INFO, e.getMessage() != null ? e.getMessage() : e.toString());
-            }
-            version = e.getMessage().substring(0, e.getMessage().length() > 100 ? 100 : e.getMessage().length());
         }
+
     }
 
 

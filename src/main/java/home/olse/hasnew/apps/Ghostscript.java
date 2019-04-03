@@ -6,7 +6,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class Ghostscript extends VersionedAppsImpl {
     {
@@ -24,28 +23,21 @@ public class Ghostscript extends VersionedAppsImpl {
     }
 
     @Override
-    public void reReadData() {
+    public void reReadData() throws IOException {
 //        name, date, value should be set here
-        try {
-            String searchText = "The latest AGPL release is ";
-            Document doc = Jsoup.connect(getURL()).get();
-            for (Element p : doc.getElementsByTag("p")) {
-                String t = p.text();
-                if (t != null && t.startsWith(searchText)) {
-                    version = p.getElementsByTag("a").first().text();
+
+        String searchText = "The latest AGPL release is ";
+        Document doc = Jsoup.connect(getURL()).get();
+        for (Element p : doc.getElementsByTag("p")) {
+            String t = p.text();
+            if (t != null && t.startsWith(searchText)) {
+                version = p.getElementsByTag("a").first().text();
 //                    System.out.println(version);
-                    date = t.substring(searchText.length() + version.length() + 1);
-                    return;
-                }
+                date = t.substring(searchText.length() + version.length() + 1);
+                return;
             }
-        } catch (IOException e) {
-            if (logger == null) {
-                System.out.println(e);
-            } else {
-                logger.log(Level.INFO, e.getMessage() != null ? e.getMessage() : e.toString());
-            }
-            version = e.getMessage().substring(0, e.getMessage().length() > 100 ? 100 : e.getMessage().length());
         }
+
     }
 
 

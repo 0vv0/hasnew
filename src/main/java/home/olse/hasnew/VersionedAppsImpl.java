@@ -2,6 +2,8 @@ package home.olse.hasnew;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class VersionedAppsImpl implements VersionedApp {
@@ -14,7 +16,7 @@ public abstract class VersionedAppsImpl implements VersionedApp {
     @Override
     public String getName() {
         if (name.equals("")) {
-            reReadData();
+            reReadDataWithIOCatch();
         }
         return this.name;
     }
@@ -22,7 +24,7 @@ public abstract class VersionedAppsImpl implements VersionedApp {
     @Override
     public String getVersion() {
         if (version.equals("")) {
-            reReadData();
+            reReadDataWithIOCatch();
         }
         return this.version;
     }
@@ -30,12 +32,25 @@ public abstract class VersionedAppsImpl implements VersionedApp {
     @Override
     public String getDate() {
         if (date.equals("")) {
-            reReadData();
+            reReadDataWithIOCatch();
         }
         return this.date;
     }
 
-    protected abstract void reReadData();
+    protected abstract void reReadData() throws IOException;
+
+    private void reReadDataWithIOCatch(){
+        try {
+            reReadData();
+        } catch (IOException e) {
+            if (logger == null) {
+                System.out.println(e);
+            } else {
+                logger.log(Level.INFO, e.getMessage() != null ? e.getMessage() : e.toString());
+            }
+            version = e.getMessage().substring(0, e.getMessage().length() > 100 ? 100 : e.getMessage().length());
+        }
+    }
 
     protected abstract String getURL();
 }
