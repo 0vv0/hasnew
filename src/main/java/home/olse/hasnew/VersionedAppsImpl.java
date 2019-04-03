@@ -48,7 +48,7 @@ public abstract class VersionedAppsImpl implements VersionedApp {
             } else {
                 logger.log(Level.INFO, e.getMessage() != null ? e.getMessage() : e.toString());
             }
-            version = e.getMessage().substring(0, e.getMessage().length() > 100 ? 100 : e.getMessage().length());
+            version = e.getMessage().substring(0, e.getMessage().length() > 25 ? 25 : e.getMessage().length());
         }
     }
 
