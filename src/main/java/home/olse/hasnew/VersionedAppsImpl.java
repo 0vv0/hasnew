@@ -53,4 +53,9 @@ public abstract class VersionedAppsImpl implements VersionedApp {
     }
 
     protected abstract String getURL();
+
+    @Override
+    public String URL() {
+        return getURL();
+    }
 }

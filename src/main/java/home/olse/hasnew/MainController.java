@@ -29,12 +29,7 @@ public class MainController {
         sb.append("<tbody>");
         for (VersionedApp app : appsLister.apps()) {
             sb
-                    .append("<tr>")
-                    .append("<td>").append(app.getName()).append("</td>")
-                    .append("<td>").append(app.getVersion()).append("</td>")
-                    .append("<td>").append(app.getDate()).append("</td>")
-                    .append("<td>").append(dpds.getLastVersion(app)).append("</td>")
-                    .append("</tr>");
+                    .append(getTREntry(app));
         }
         sb.append("</tbody>").append("</table>");
 
@@ -77,12 +72,13 @@ public class MainController {
 
     private String getTREntry(VersionedApp app) {
         if (app != null) {
-            String sb = "<tr>" +
-                    "<td>" + app.getName() + "</td>" +
+            System.out.println(app.URL());
+            return "<tr>" +
+                    "<td><a href=\"" + app.URL() + "\" target=_blank>" + app.getName() + "</a></td>" +
                     "<td>" + app.getVersion() + "</td>" +
                     "<td>" + app.getDate() + "</td>" +
+                    "<td>"  + dpds.getLastVersion(app) + "</td>" +
                     "</tr>";
-            return sb;
         } else {
             return "</tr>";
         }
