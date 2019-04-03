@@ -15,7 +15,7 @@ public class DbVisualizer extends VersionedAppsImpl {
 
     @Override
     public String getFileMask() {
-        return "DPD WinSCP ";
+        return "DPD DbVis DbVisualizer ";
     }
 
     @Override
