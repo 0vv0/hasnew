@@ -12,15 +12,18 @@ import java.util.logging.Logger;
 
 @Component
 public class Apps {
-    @Value("${apps.path}")
     private String path;
+    private Logger logger;
 
     public String getPath() {
         return path;
     }
 
     @Autowired
-    private Logger logger;
+    public Apps(@Value("${apps.path}") String path, Logger logger) {
+        this.path = path;
+        this.logger = logger;
+    }
 
     private static List<File> files(String path) {
 //        Logger.getLogger(Apps.class.getName()).log(Level.INFO, "path to apps classes: " + path);
@@ -76,7 +79,6 @@ public class Apps {
         return null;
     }
 
-
     public List<String> files() {
         List<File> files = files(path);
         List<String> list = new ArrayList<>(files.size());
@@ -88,7 +90,6 @@ public class Apps {
 
     public List<VersionedApp> apps() {
         Map<File, VersionedApp> apps = compile(files(path));
-//        List<VersionedApp> versionedAppList = new ArrayList<>(apps.values());
         return new ArrayList<>(apps.values());
     }
 
@@ -101,6 +102,5 @@ public class Apps {
         }
         return null;
     }
-
 
 }
