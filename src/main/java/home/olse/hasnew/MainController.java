@@ -1,10 +1,10 @@
 package home.olse.hasnew;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class MainController {
     @Autowired
     private DPDInfoService dpds;
 
-    @RequestMapping("list")
+    @RequestMapping(value = "list")
     @ResponseBody
     public String get() {
         StringBuilder sb = new StringBuilder("<table id=\"versionsTable\" border = 1>");
@@ -44,14 +44,14 @@ public class MainController {
         return body + "<br><hr>" + getFileListTable();
     }
 
-    @RequestMapping(value = "{fileName}")
+    @RequestMapping(value = "{fileName}", method = RequestMethod.GET)
     @ResponseBody
     public String getFile(@PathVariable String fileName) {
         VersionedApp app = appsLister.getByFileName(fileName);
         String s = getTableEntry(getTREntry(app));
 
 
-        return s;
+        return "<html><body>" + s + "</body></html>";
     }
 
     private String getFileListTable() {
@@ -72,12 +72,12 @@ public class MainController {
 
     private String getTREntry(VersionedApp app) {
         if (app != null) {
-            System.out.println(app.URL());
+//            System.out.println(app.URL());
             return "<tr>" +
                     "<td><a href=\"" + app.URL() + "\" target=_blank>" + app.getName() + "</a></td>" +
                     "<td>" + app.getVersion() + "</td>" +
                     "<td>" + app.getDate() + "</td>" +
-                    "<td>"  + dpds.getLastVersion(app) + "</td>" +
+                    "<td>" + dpds.getLastVersion(app) + "</td>" +
                     "</tr>";
         } else {
             return "</tr>";
@@ -85,7 +85,12 @@ public class MainController {
     }
 
     private String getTableEntry(String trNode) {
-        return "<table><tbody>" + trNode + "</tbody></table>";
+        return "<table border = 1><tbody>" + trNode + "</tbody></table>";
     }
 
+    @ResponseBody
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    public String handleHttpMediaTypeNotAcceptableException() {
+        return "acceptable MIME type:" + MediaType.TEXT_HTML_VALUE;
+    }
 }
