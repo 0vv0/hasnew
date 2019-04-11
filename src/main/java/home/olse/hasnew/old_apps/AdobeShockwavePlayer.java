@@ -1,4 +1,4 @@
-package home.olse.hasnew.apps;
+package home.olse.hasnew.old_apps;
 
 import home.olse.hasnew.VersionedAppsImpl;
 import org.jsoup.Jsoup;
