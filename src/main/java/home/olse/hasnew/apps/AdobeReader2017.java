@@ -8,9 +8,9 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class AdobeAcrobatReaderDCContinuousTrack extends VersionedAppsImpl {
+public class AdobeReader2017 extends VersionedAppsImpl {
     {
-        name = "Adobe Acrobat Reader DC (Continuous Track)";
+        name = "Adobe Reader 2017 (Classic Track)";
     }
 
     @Override
@@ -20,7 +20,7 @@ public class AdobeAcrobatReaderDCContinuousTrack extends VersionedAppsImpl {
 
     @Override
     public String getFileMask() {
-        return "DPD Adobe Reader DC ";
+        return "DPD Adobe Reader 2017 ";
     }
 
     @Override
@@ -30,7 +30,7 @@ public class AdobeAcrobatReaderDCContinuousTrack extends VersionedAppsImpl {
         Document doc = Jsoup.connect(getURL()).get();
         for (Element tr : doc.getElementsByTag("tr")) {
             String t = tr.text();
-            if (t != null && t.startsWith("Adobe Acrobat Reader DC (Continuous Track)")) {
+            if (t != null && t.startsWith("Adobe Acrobat Reader MUI 2017 (Acrobat 2017 Track)")) {
                 Elements tds = tr.getElementsByTag("td");
                 date = tds.last() != null ? tds.last().text() : "";
                 Element tE = tr.previousElementSibling();
