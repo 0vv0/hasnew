@@ -30,5 +30,9 @@ public class AppsDynamicCompiler {
         return (VersionedApp) aClass.newInstance();
     }
 
+    public static VersionedApp compileFrom(String className) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        return (VersionedApp) Class.forName("home.olse.hasnew.apps." + className).newInstance();
+    }
+
 
 }

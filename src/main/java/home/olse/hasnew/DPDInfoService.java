@@ -1,7 +1,5 @@
 package home.olse.hasnew;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -10,18 +8,7 @@ import java.util.List;
 
 @Service
 public class DPDInfoService {
-    private String path;
-
-    @Autowired
-    public DPDInfoService(@Value("${dpd.path}") String path) {
-        this.path = path;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public List<String> getDPDs(VersionedApp app) {
+    public static List<String> getDPDs(String path, VersionedApp app) {
         File f = new File(path);
         File[] files = f.listFiles((dir, name) ->
                 name != null &&
@@ -40,8 +27,8 @@ public class DPDInfoService {
         }
     }
 
-    public String getLastVersion(VersionedApp app) {
-        List<String> fileNames = getDPDs(app);
+    public static String getLastVersion(String path, VersionedApp app) {
+        List<String> fileNames = getDPDs(path, app);
         if (fileNames.size() > 0) {
             return fileNames.get(fileNames.size() - 1).substring(app.getFileMask().length());
         } else {

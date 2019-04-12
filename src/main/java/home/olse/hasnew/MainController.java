@@ -17,6 +17,8 @@ public class MainController {
     private Apps appsLister;
     @Autowired
     private DPDInfoService dpds;
+    @Autowired
+    private Config config;
 
     @RequestMapping(value = "list")
     @ResponseBody
@@ -25,11 +27,11 @@ public class MainController {
         sb.append("<thead>");
         sb.append("<tr><td>Name</td><td>Version</td><td>Release Date</td><td>DPD</td></tr>");
         sb.append("<tr><td>")
-                .append(appsLister.getPath()).append("</td><td></td><td></td><td>")
-                .append(dpds.getPath()).append("</td></tr>");
+                .append(config.getAppsPath()).append("</td><td></td><td></td><td>")
+                .append(config.getDpdPath()).append("</td></tr>");
         sb.append("</thead>");
         sb.append("<tbody>");
-        for (VersionedApp app : appsLister.apps()) {
+        for (VersionedApp app : appsLister.apps(config.getAppsPath())) {
             sb
                     .append(getTREntry(app));
         }
@@ -49,7 +51,7 @@ public class MainController {
     @RequestMapping(value = "{fileName}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String getFile(@PathVariable String fileName) {
-        VersionedApp app = appsLister.getByFileName(fileName);
+        VersionedApp app = appsLister.getByFileName(config.getAppsPath(), fileName);
         String s = getTableEntry(getTREntry(app));
 
 
@@ -57,7 +59,7 @@ public class MainController {
     }
 
     private String getFileListTable() {
-        List<String> fileNames = appsLister.files();
+        List<String> fileNames = appsLister.filesNames(config.getAppsPath());
         StringBuilder sb = new StringBuilder("<table><tbody>");
         fileNames.forEach(x ->
                 sb
@@ -79,7 +81,7 @@ public class MainController {
                     "<td><a href=\"" + app.URL() + "\" target=_blank>" + app.getName() + "</a></td>" +
                     "<td>" + app.getVersion() + "</td>" +
                     "<td>" + app.getDate() + "</td>" +
-                    "<td>" + dpds.getLastVersion(app) + "</td>" +
+                    "<td>" + dpds.getLastVersion(config.getDpdPath(), app) + "</td>" +
                     "</tr>";
         } else {
             return "</tr>";

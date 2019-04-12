@@ -1,7 +1,5 @@
 package home.olse.hasnew;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -10,26 +8,15 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static home.olse.hasnew.AppsDynamicCompiler.compileFrom;
+
 @Component
 public class Apps {
-    private String path;
-    private Logger logger;
-
-    public String getPath() {
-        return path;
-    }
-
-    @Autowired
-    public Apps(@Value("${apps.path}") String path, Logger logger) {
-        this.path = path;
-        this.logger = logger;
-    }
-
     private static List<File> files(String path) {
-//        Logger.getLogger(Apps.class.getName()).log(Level.INFO, "path to apps classes: " + path);
         File f = new File(path);
         File[] files = f.listFiles(
-                (dir, name) -> name != null && name.endsWith(".java")
+                (dir, name) -> name != null && (name.endsWith(".java") || name.endsWith(".class"))
+
         );
         if (files != null) {
             return Arrays.asList(files);
@@ -71,15 +58,24 @@ public class Apps {
 
     private static VersionedApp compile(final File file) {
         try {
-            VersionedApp app = AppsDynamicCompiler.compileFrom(file);
+            VersionedApp app = compileFrom(file);
             return app;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
             Logger.getLogger(Apps.class.getName()).log(Level.INFO, e.toString());
         }
         return null;
     }
+    private static VersionedApp compile(final String file) {
+        try {
+            VersionedApp app = compileFrom(file);
+            return app;
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            Logger.getLogger(Apps.class.getName()).log(Level.INFO, e.toString());
+        }
+        return null;
+    }
 
-    public List<String> files() {
+    public static List<String> filesNames(String path) {
         List<File> files = files(path);
         List<String> list = new ArrayList<>(files.size());
         for (File file : files) {
@@ -88,16 +84,20 @@ public class Apps {
         return list;
     }
 
-    public List<VersionedApp> apps() {
+    public static List<VersionedApp> apps(String path) {
         Map<File, VersionedApp> apps = compile(files(path));
         return new ArrayList<>(apps.values());
     }
 
-    public VersionedApp getByFileName(String fileName) {
+    public VersionedApp getByFileName(String path, String fileName) {
         for (File file : files(path)) {
-//            logger.log(Level.INFO, file.getName());
             if (file.getName().equals(fileName + ".java")) {
                 return compile(file);
+            } else if(file.getName().equals(fileName + ".class")){
+                VersionedApp app;
+                app = compile(file.getName());
+
+                return app;
             }
         }
         return null;
