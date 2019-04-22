@@ -1,5 +1,8 @@
-package home.olse.hasnew;
+package home.olse.hasnew.controllers;
 
+import home.olse.hasnew.*;
+import home.olse.hasnew.keeper.KeeperService;
+import home.olse.hasnew.keeper.KeeperServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -20,15 +23,27 @@ public class MainController {
     @Autowired
     private Config config;
 
+    private KeeperService<String, String> keeper;
+
+    @Autowired
+    public MainController(KeeperServiceImpl<String, String> keeper) {
+        this.keeper = keeper;
+    }
+
     @RequestMapping(value = "list")
     @ResponseBody
     public String get() {
         StringBuilder sb = new StringBuilder("<table id=\"versionsTable\" border = 1>");
         sb.append("<thead>");
-        sb.append("<tr><td>Name</td><td>Version</td><td>Release Date</td><td>DPD</td></tr>");
-        sb.append("<tr><td>")
-                .append(config.getAppsPath()).append("</td><td></td><td></td><td>")
-                .append(config.getDpdPath()).append("</td></tr>");
+        sb.append("<tr><td>Name</td><td>Version</td><td>Release Date</td><td>DPD</td><td/></tr>");
+        sb
+                .append("<tr>")
+                .append("<td>").append(config.getAppsPath()).append("</td>")
+                .append("<td/>")
+                .append("<td/>")
+                .append("<td>").append(config.getDpdPath()).append("</td>")
+                .append("<td/>")
+                .append("</tr>");
         sb.append("</thead>");
         sb.append("<tbody>");
         for (VersionedApp app : appsLister.apps(config.getAppsPath())) {
@@ -36,7 +51,6 @@ public class MainController {
                     .append(getTREntry(app));
         }
         sb.append("</tbody>").append("</table>");
-
         return sb.toString();
     }
 
@@ -52,7 +66,7 @@ public class MainController {
     @ResponseBody
     public String getFile(@PathVariable String fileName) {
         VersionedApp app = appsLister.getByFileName(config.getAppsPath(), fileName);
-        String s = getTableEntry(getTREntry(app));
+        String s = TableUtils.getTableEntry(getTREntry(app));
 
 
         return "<html><body>" + s + "</body></html>";
@@ -75,20 +89,18 @@ public class MainController {
     }
 
     private String getTREntry(VersionedApp app) {
+        String s = "";
         if (app != null) {
-//            System.out.println(app.URL());
-            return "<tr>" +
-                    "<td><a href=\"" + app.URL() + "\" target=_blank>" + app.getName() + "</a></td>" +
+            String oldVersion = keeper.getData(app.getName());
+            oldVersion = oldVersion == null || oldVersion.isEmpty() ? "Not remembered yet" : oldVersion;
+            s = "<td><a href=\"" + app.URL() + "\" target=_blank>" + app.getName() + "</a></td>" +
                     "<td>" + app.getVersion() + "</td>" +
                     "<td>" + app.getDate() + "</td>" +
                     "<td>" + dpds.getLastVersion(config.getDpdPath(), app) + "</td>" +
-                    "</tr>";
-        } else {
-            return "</tr>";
+                    "<td><a href=\"/save/" + app.getName() + "/" + app.getVersion() + "/\">" + oldVersion + "</a></td>";
         }
+        return TableUtils.getTREntry(s);
     }
 
-    private String getTableEntry(String trNode) {
-        return "<table border = 1><tbody>" + trNode + "</tbody></table>";
-    }
+
 }
