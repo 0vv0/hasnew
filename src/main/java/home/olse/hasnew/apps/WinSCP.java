@@ -25,15 +25,14 @@ public class WinSCP extends VersionedAppsImpl {
 
     @Override
     public void reReadData() throws IOException {
-        String searchString = "WinSCP ";
-        String tail = " Download";
+        String searchString = "/download/WinSCP-";
+        String tail = "-Setup.exe";
         Document doc = Jsoup.connect(getURL()).get();
-        Elements els = doc.getElementsByTag("h1");
+        Elements els = doc.getElementsByAttributeValueStarting("href", searchString);
         if (els != null && els.size() > 0) {
             for (Element el : els) {
-                if (el.text() != null && el.text().startsWith(searchString) && el.text().endsWith(tail)) {
-                    int i = el.text().indexOf(searchString);
-                    version = el.text().substring(i + searchString.length(), el.text().length() - tail.length());
+                if (el.attr("href").endsWith(tail)) {
+                    version = el.attr("href").substring(searchString.length(), el.attr("href").length() - tail.length());
                     date = " ";
                 }
             }
