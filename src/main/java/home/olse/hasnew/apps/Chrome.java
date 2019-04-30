@@ -42,7 +42,9 @@ public class Chrome extends VersionedAppsImpl {
                         version = el.text().substring(s1.length(), el.text().indexOf(tail1));
                     } else if (el.text().contains(tail2)) {
                         int i = el.text().indexOf(tail2);
-                        version = el.text().substring(i - 13, i - 1);
+                        String temp = el.text().substring(0, i - 1);
+                        int count = temp.split(" ").length;
+                        version = temp.split(" ")[count-1];
                     }
 
                 }
