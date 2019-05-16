@@ -8,6 +8,15 @@ public class TableUtils {
         return s == null ? "<tr/>" : "<tr>" + s + "</tr>";
     }
 
+    public static String getTREntry(String... ss){
+        if(ss==null){return "<tr/>";}
+        StringBuffer answer = new StringBuffer("<tr>");
+        for (String s : ss) {
+            answer.append(getTDEntry(s));
+        }
+        return answer.append("</tr>").toString();
+    }
+
     public static String getTDEntry(String s) {
         return s == null ? "<td/>" : "<td>" + s + "</td>";
     }

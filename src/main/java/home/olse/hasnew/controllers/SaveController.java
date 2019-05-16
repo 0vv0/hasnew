@@ -1,6 +1,6 @@
 package home.olse.hasnew.controllers;
 
-import home.olse.hasnew.keeper.KeeperService;
+import home.olse.hasnew.services.keeper.KeeperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
