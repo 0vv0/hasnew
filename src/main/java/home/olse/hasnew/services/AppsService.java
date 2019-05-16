@@ -3,13 +3,13 @@ package home.olse.hasnew.services;
 import home.olse.hasnew.VersionedApp;
 import home.olse.hasnew.apps.Apps;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Component
+@Service
 public class AppsService {
     private Apps apps;
 
