@@ -1,4 +1,4 @@
-package home.olse.hasnew.apps.all;
+package home.olse.hasnew.apps;
 
 import home.olse.hasnew.apps.VersionedAppsImpl;
 import org.jsoup.Jsoup;
@@ -8,26 +8,26 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class TortoiseGit extends VersionedAppsImpl {
+public class TortoiseSVN extends VersionedAppsImpl {
     {
-        name = "TortoiseGit";
+        name = "TortoiseSVN";
     }
 
     @Override
     public String getFileMask() {
-        return "DPD TortoiseGIT ";
+        return "DPD TortoiseSVN ";
     }
 
     @Override
     public String getURL() {
-        return "https://tortoisegit.org/download/";
+        return "https://tortoisesvn.net/downloads.html";
     }
 
     @Override
     public void reReadData() throws IOException {
-        String searchString = "The current stable version is: ";
+        String searchString = "The current version is ";
         Document doc = Jsoup.connect(getURL()).get();
-        Elements els = doc.getElementsByTag("strong");
+        Elements els = doc.getElementsByTag("h1");
         if (els != null && els.size() > 0) {
             for (Element el : els) {
                 if (el.text() != null && el.text().startsWith(searchString)) {
