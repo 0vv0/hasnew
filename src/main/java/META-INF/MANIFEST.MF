@@ -18,3 +18,4 @@ Class-Path: jackson-annotations-2.9.0.jar jackson-datatype-jdk8-2.9.8.
  or-6.0.14.Final.jar log4j-to-slf4j-2.11.2.jar snakeyaml-1.23.jar tomc
  at-embed-websocket-9.0.16.jar
 Main-Class: home.olse.hasnew.HasNewVersionApplication
+

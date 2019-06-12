@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="hasnew">
+    <output-path>$PROJECT_DIR$/classes/artifacts/hasnew</output-path>
+    <root id="archive" name="hasnew.jar">
+      <element id="module-output" name="hasnew" />
+    </root>
+  </artifact>
+</component>

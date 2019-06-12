@@ -1,7 +1,6 @@
 package home.olse.hasnew.apps.all;
 
 import home.olse.hasnew.apps.VersionedAppsImpl;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,9 +31,17 @@ public class MicrosoftTeams extends VersionedAppsImpl {
         try (Scanner s = new Scanner(conn.getInputStream()).useDelimiter("\\A")) {
             result = s.hasNext() ? s.next() : "";
         }
-        JSONObject jsonObject = new JSONObject(result);
+        String[] jsonObject = result.split(":");
+	if(jsonObject.length>3){
+		result = jsonObject[3];
+		String[] subJson = result.split("/");
+
+		if(subJson.length>4){
+			result = subJson[4];
+		}
+	}
 
         date = " ";
-        version = jsonObject.getString("nugetPackagePath");
+        version = result;
     }
 }
