@@ -1,6 +1,5 @@
-package home.olse.hasnew.apps;
+package home.olse.hasnew;
 
-import home.olse.hasnew.VersionedApp;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;

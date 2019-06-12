@@ -1,6 +1,6 @@
 package home.olse.hasnew.apps;
 
-import home.olse.hasnew.apps.VersionedAppsImpl;
+import home.olse.hasnew.VersionedAppsImpl;
 
 import java.io.IOException;
 import java.net.URL;

@@ -1,6 +1,6 @@
 package home.olse.hasnew.apps.old_apps;
 
-import home.olse.hasnew.apps.VersionedAppsImpl;
+import home.olse.hasnew.VersionedAppsImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
