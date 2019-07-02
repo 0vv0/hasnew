@@ -14,7 +14,7 @@ public class AdoptOpenJDK8OpenJ9 extends VersionedAppsImpl {
 
     @Override
     protected String getURL() {
-        return "https://adoptopenjdk.net/?variant=openjdk8&jvmVariant=openj9";
+        return "https://api.adoptopenjdk.net/v2/info/releases/openjdk8?release=latest&openjdk_impl=openj9";
     }
 
     @Override
@@ -26,13 +26,31 @@ public class AdoptOpenJDK8OpenJ9 extends VersionedAppsImpl {
     public void reReadData() throws IOException {
 //        name, date, value should be set here
 
-        String id = "dl-version-text";
-        Document doc = Jsoup.connect(getURL()).get();
-        Element el = doc.getElementById(id);
-        if(el!=null&&el.text()!=null){
-            version = el.text();
-            date = " ";
+        String searchString = "release_name";
+        Document doc = Jsoup.connect(getURL()).ignoreContentType(true).get();
+        String body = doc.text();
+        if (body != null) {
+            String[] jsonPairs = body.substring(1, body.length() - 1).split(",");
+            String releasePair = null;
+            for (String jsonpair : jsonPairs) {
+                if (jsonpair.contains(searchString)) {
+                    releasePair = jsonpair;
+                    break;
+                }
+            }
+            if (releasePair != null) {
+                String[] jsonPair = releasePair.split(":");
+                if (jsonPair.length == 2) {
+                    version = jsonPair[1];
+                    if(version.startsWith("\"")){
+                        version = version.substring(1);
+                    }
+                    if(version.endsWith("\"")){
+                        version = version.substring(0, version.length()-1);
+                    }
+                    date = " ";
+                }
+            }
         }
-
     }
 }
