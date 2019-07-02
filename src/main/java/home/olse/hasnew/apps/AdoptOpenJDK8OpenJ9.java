@@ -42,6 +42,7 @@ public class AdoptOpenJDK8OpenJ9 extends VersionedAppsImpl {
                 String[] jsonPair = releasePair.split(":");
                 if (jsonPair.length == 2) {
                     version = jsonPair[1];
+                    version = version.trim();
                     if(version.startsWith("\"")){
                         version = version.substring(1);
                     }
