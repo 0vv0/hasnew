@@ -2,6 +2,7 @@ package home.olse.hasnew.apps;
 
 import home.olse.hasnew.VersionedApp;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -14,6 +15,9 @@ public class Apps {
 
     public Apps(String[] appsClasses) {
         this.appsClasses = appsClasses;
+        if(this.appsClasses!=null){
+            Arrays.sort(this.appsClasses);
+        }
     }
 
     private static Logger logger = Logger.getLogger(Apps.class.getName());
