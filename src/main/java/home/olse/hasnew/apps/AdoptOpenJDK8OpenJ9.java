@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class AdoptOpenJDK8OpenJ9 extends VersionedAppsImpl {
     {
-        name = "Adopt Open JDK 8 (JVM: OpenJ9)";
+        name = "Adopt Open JDK 8 (JVM OpenJ9)";
     }
 
     @Override
